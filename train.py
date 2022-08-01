@@ -68,7 +68,7 @@ def get_args_parser():
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N',
                         help='start epoch')
     parser.add_argument('--eval', action='store_true')
-    parser.add_argument('--num_workers', default=8, type=int)
+    parser.add_argument('--num_workers', default=0, type=int)
     parser.add_argument('--eval_freq', default=1, type=int,
                         help='frequency of evaluation, default setting is evaluating in every 5 epoch')
     parser.add_argument('--gpu_id', default=0, type=int, help='the gpu used for training')
@@ -106,7 +106,7 @@ def main(args):
     print('number of params:', n_parameters)
     # use different optimation params for different parts of the model
     param_dicts = [
-        {"params": [p for n, p in model_without_ddp.named_parameters(SSS) if "backbone" not in n and p.requires_grad]},
+        {"params": [p for n, p in model_without_ddp.named_parameters() if "backbone" not in n and p.requires_grad]},
         {
             "params": [p for n, p in model_without_ddp.named_parameters() if "backbone" in n and p.requires_grad],
             "lr": args.lr_backbone,
